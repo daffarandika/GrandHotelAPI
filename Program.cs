@@ -1,7 +1,9 @@
+using GrandHotelAPI;
 using GrandHotelAPI.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+CryptoHelper.GenerateAccessToken();
 
 // Add services to the container.
 

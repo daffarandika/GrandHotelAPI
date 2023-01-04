@@ -23,7 +23,7 @@ namespace GrandHotelAPI.Controllers
             {
                 string hashedPassword = CryptoHelper.toSha256(req.Password);
                 var employee = _context.Employees.Single(m => m.Name == req.Name && m.Password == hashedPassword);
-                return Ok(CryptoHelper.Authenticate(employee));
+                return Ok(CryptoHelper.GenerateJWT(employee));
             } catch (Exception e)
             {
                 return BadRequest("employee not found");
