@@ -10,7 +10,10 @@ namespace GrandHotelAPI
         {
             hmac.Key = System.Text.Encoding.UTF8.GetBytes(Vars.ACCESS_TOKEN);
             string algo = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("HS256"));
-            string payload = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(req.Name + req.Password));
+
+            TimeSpan t = DateTime.Now - new DateTime(1970, 1, 1);
+            string payload = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(req.Name + req.Password + t.TotalSeconds));
+
             string signature = Convert.ToHexString(hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(algo + payload)));
             return $"{algo}.{payload}.{signature}";
 
