@@ -1,4 +1,5 @@
 ﻿using GrandHotelAPI.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
 namespace GrandHotelAPI
@@ -29,14 +30,19 @@ namespace GrandHotelAPI
         {
             Vars.ACCESS_TOKEN = Convert.ToBase64String(hmac.Key);
         }
-        public static bool IsTokenValid(string jwt)
+        public static ValidationResponse ValidateToken(string jwt)
         {
+            if (jwt.IsNullOrEmpty())
+            {
+                return new ValidationResponse(false, "A token must be provided");
+            }
             string[] arr = jwt.Split('.');
             string algo = arr[0];
             string payload = arr[1];
             string signature = arr[2];
             hmac.Key = System.Text.Encoding.UTF8.GetBytes(Vars.ACCESS_TOKEN);
-            return signature == Convert.ToHexString(hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(algo + payload)));
+            bool isValid = signature == Convert.ToHexString(hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(algo + payload)));
+            return new ValidationResponse(isValid, "token is invalid");
         }
     }
 }

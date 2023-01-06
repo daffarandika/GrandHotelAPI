@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GrandHotelAPI.Models;
 
@@ -13,5 +14,6 @@ public partial class RoomType
 
     public int RoomPrice { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Room> Rooms { get; } = new List<Room>();
 }
